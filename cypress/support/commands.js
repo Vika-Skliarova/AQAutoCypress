@@ -23,3 +23,21 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
+
+
+Cypress.Commands.add('login', (email, password) => {
+    
+    cy.get('.header_signin').click();
+
+    cy.get('#signinEmail')
+        .should('be.visible')
+        .clear()
+        .type(email);
+
+    cy.get('#signinPassword')
+        .should('be.visible')
+        .clear()
+        .type(password);
+
+    cy.get('.modal-footer .btn-primary').should('be.visible').click();
+});
