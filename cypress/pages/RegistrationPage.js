@@ -1,4 +1,4 @@
-class RegisterPage {
+class RegistrationPage {
     selectors = {
         buttonSignUp: '.hero-descriptor_btn',
         formTitle: '.modal-title',
@@ -7,13 +7,12 @@ class RegisterPage {
         emailInput: '#signupEmail',
         passwordInput: '#signupPassword',
         repeatPasswordInput: '#signupRepeatPassword',
-        registerButton: '.modal-footer .btn-primary',
+        registrationButton: '.modal-footer .btn-primary',
         errorMessage: '.invalid-feedback p',
         errorBorder: '.is-invalid'  
     }
 
-// Actions
-
+// Navigation
     visit() {
         cy.visit('https://guest:welcome2qauto@qauto.forstudy.space/');
     }
@@ -22,8 +21,8 @@ class RegisterPage {
        cy.get(this.selectors.buttonSignUp).should('be.visible').click();
     }
 
-    clickRegisterButton() {
-        cy.get(this.selectors.registerButton).click();
+    clickRegistrationButton() {
+        cy.get(this.selectors.registrationButton).click();
     }
 
 
@@ -52,14 +51,15 @@ class RegisterPage {
         return cy.get(this.selectors.repeatPasswordInput);
     }
 
-    getRegisterButton() {
-        return cy.get(this.selectors.registerButton);
+    getRegistrationButton() {
+        return cy.get(this.selectors.registrationButton);
     }
 
 // Actions (input)
     typeUserName(name) {
-        this.getUserNameInput().clear().type(name);
+        this.getUserNameInput().clear().type(name.trim());
     }
+
     typeUserLastname(lastName) {
         this.getUserLastnameInput().clear().type(lastName);
     }
@@ -77,21 +77,20 @@ class RegisterPage {
     }
 
 // Flow 
-
-    register(name, lastName, email, password) {
+    registration(name, lastName, email, password) {
         this.typeUserName(name);
         this.typeUserLastname(lastName);
         this.typeEmail(email);
         this.typePassword(password);
         this.typeRepeatPassword(password);
-        this.clickRegisterButton();
+        this.clickRegistrationButton();
     }
 
-     checkRegisterButtonDisabled() {
-        this.getRegisterButton().should('be.disabled');
+    checkRegistrationButtonDisabled() {
+        this.getRegistrationButton().should('be.disabled');
     }
 
-    verifyRegisterPage() {
+    verifyRegistrationPage() {
         this.getFormTitle()
             .should('be.visible')
             .and('contain.text', 'Registration');
@@ -100,7 +99,7 @@ class RegisterPage {
         this.getEmailInput().should('be.visible');
         this.getPasswordInput().should('be.visible');
         this.getRepeatPasswordInput().should('be.visible');
-        this.getRegisterButton().should('be.visible');
+        this.getRegistrationButton().should('be.visible');
     }
 
     checkErrorMessage(text) {
@@ -115,4 +114,4 @@ class RegisterPage {
     }
 }
 
-export default new RegisterPage();
+export default new RegistrationPage();
