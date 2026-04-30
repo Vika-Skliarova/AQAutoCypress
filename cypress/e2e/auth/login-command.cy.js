@@ -1,33 +1,32 @@
+import '../../support/commands';
 import LoginPage from '../../pages/LoginPage';
 
 describe('Login with custom command', () => {
 
-    beforeEach(() => {
+    beforeEach(function () {
         LoginPage.visit();
+
+        cy.fixture('user').then((data) => {
+            this.userData = data;
+        });
     });
 
-    it('Login with valid user', () => {
+    it('Login with valid user', function () {
 
-        cy.fixture('user').then((userData) => {
-
-            cy.login(
-                userData.validUser.email,
-                userData.validUser.password
-            );
-        });
+        cy.login(
+            this.userData.validUser.email,
+            this.userData.validUser.password
+        );
 
         cy.location('pathname').should('eq', '/panel/garage');
     });
 
-    it('Login with wrong user', () => {
+    it('Login with wrong user', function () {
 
-        cy.fixture('user').then((userData) => {
-
-            cy.login(
-                userData.wrongUser.email,
-                userData.wrongUser.password
-            );
-        });
+        cy.login(
+            this.userData.wrongUser.email,
+            this.userData.wrongUser.password
+        );
 
         cy.get('.modal-body .alert-danger')
             .should('be.visible')
