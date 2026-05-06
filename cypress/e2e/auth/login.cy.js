@@ -1,33 +1,23 @@
-import LoginPage from '../../pages/LoginPage';
-import { user } from '../../fixtures/users';
+import LoginPage from "../../pages/LoginPage";
 
-describe('Login tests', () => {
+describe("Authentication Tests", () => {
+  beforeEach(() => {
+    LoginPage.open();
+  });
 
-    beforeEach(() => {
-        LoginPage.visit();
+  it("Should successfully login with valid credentials", () => {
+    cy.env(['username', 'password']).then((env) => {
+      LoginPage.login(env.username, env.password);
     });
 
-    it('Check login form is opened', () => {
-        LoginPage.clickSignIn();
-        LoginPage.verifyLoginForm();
-    });
+    cy.url().should("include", "/panel/garage");
+    cy.get('h1').should('contain.text', 'Garage');
+  });
 
-    it('Check login with wrong credentials', () => {
-        LoginPage.login(
-            user.wrongUser.email,
-            user.wrongUser.password
-        );
-
-        LoginPage.verifyErrorMessage('Wrong email or password');
-    });
-
-    it('Check login with valid credentials', () => {
-        LoginPage.login(
-            user.standardUser.email,
-            user.standardUser.password
-        );
-
-        cy.url().should('include', '/panel/garage');
-    });
-
+  it("Should show error message with incorrect password", () => {
+    LoginPage.login("wrong@email.com", "WrongPass123");
+    
+    cy.get('.alert-danger').should('be.visible')
+      .and('contain.text', 'Wrong email or password');
+  });
 });

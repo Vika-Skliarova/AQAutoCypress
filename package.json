@@ -19,6 +19,9 @@
   },
   "homepage": "https://github.com/Vika-Skliarova/AQAutoCypress#readme",
   "devDependencies": {
-    "cypress": "^15.13.1"
+    "cypress": "^15.14.2",
+    "mochawesome": "^7.1.4",
+    "mochawesome-merge": "^5.1.1",
+    "mochawesome-report-generator": "^6.3.2"
   }
 }
