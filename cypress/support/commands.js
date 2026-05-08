@@ -41,3 +41,40 @@ Cypress.Commands.add('login', (email, password) => {
 
     cy.get('.modal-footer .btn-primary').should('be.visible').click();
 });
+
+Cypress.Commands.add('registerUserAndSetSidCookie', () => {
+  const email = `user_${Date.now()}@test.com`;
+  const password = 'Qwerty12345';
+
+  return cy.request({
+    method: 'POST',
+    url: '/api/auth/signup',
+    body: {
+      name: 'Vika',
+      lastName: 'Test',
+      email: email,
+      password: password,
+      repeatPassword: password,
+    },
+  }).then((response) => {
+    expect(response.status).to.eq(201);
+    const sidCookie = response.headers['set-cookie'].find((cookie) => cookie.startsWith('sid='));
+    const sidValue = sidCookie.split(';')[0].replace('sid=', '');
+    cy.setCookie('sid', sidValue);
+  });
+});
+
+Cypress.Commands.add('createExpenseApi', (carId, mileage, liters, totalCost) => {
+  return cy.request({
+    method: 'POST',
+    url: '/api/expenses',
+    body: {
+      carId: carId,
+      reportedAt: new Date().toISOString().split('T')[0],
+      mileage: mileage,
+      liters: liters,
+      totalCost: totalCost,
+      forceMileage: false
+    },
+  });
+});
