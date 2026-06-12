@@ -7,10 +7,9 @@ describe("Fuel Expenses Tests", () => {
   beforeEach(() => {
     LoginPage.open();
 
-    const username = Cypress.env('username');
-    const password = Cypress.env('password');
-    
-    LoginPage.login(username, password);
+    cy.env().then((env) => {
+      LoginPage.login(env.username, env.password);
+    });
     
     cy.url().should('include', '/garage');
 
