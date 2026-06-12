@@ -35,7 +35,7 @@ jobs:
         run: npm ci
 
       - name: Run Cypress tests
-        run: npx cypress run --browser firefox
+        run: npx cypress run --browser chrome
 
       # Artifacts
       - name: Upload Cypress artifacts
