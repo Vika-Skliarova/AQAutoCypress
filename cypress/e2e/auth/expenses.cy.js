@@ -6,20 +6,12 @@ describe("Fuel Expenses Tests", () => {
   
   beforeEach(() => {
     LoginPage.open();
-
-    cy.env(['username', 'password']).then(([username, password]) => {
-      LoginPage.login(username, password);
+    cy.env(['username', 'password']).then((env) => {
+      LoginPage.login(env.username, env.password);
     });
-    
     cy.url().should('include', '/garage');
 
     GaragePage.addCarIfNotExist(); 
-    
-    cy.get('body').then(($body) => {
-      if ($body.find('.modal-dialog').length > 0) {
-        cy.get('button').contains('Cancel').click({ force: true });
-      }
-    });
   });
 
   it("Should successfully add fuel expense", () => {

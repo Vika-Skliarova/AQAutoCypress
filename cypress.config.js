@@ -53,7 +53,8 @@ module.exports = defineConfig({
       '**/google.cy.js',
       '**/login-command.cy.js',
       '**/hillel-auto-links.cy.js',
-      '**/registeration.cy.js'
+      '**/registeration.cy.js',
+      '**/expenses.cy.js'
     ],
   },
 });
