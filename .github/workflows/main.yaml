@@ -1,0 +1,50 @@
+name: Cypress Docker Tests
+
+on:
+  push:
+    branches:
+      - '**'
+  pull_request:
+    branches:
+      - '**'
+  workflow_dispatch:
+
+jobs:
+  cypress-run:
+    timeout-minutes: 30
+    runs-on: ubuntu-latest
+
+    # Docker image with Cypress
+    container:
+      image: cypress/browsers:node-20.9.0-chrome-118.0.5993.88-1-ff-118.0.2-edge-118.0.2088.46-1
+      options: --user 1001 --init
+
+    # Secrets variables for Cypress tests
+    env:
+      CYPRESS_BASE_URL: ${{ secrets.BASE_URL }}
+      CYPRESS_USER_EMAIL: ${{ secrets.USER_EMAIL }}
+      CYPRESS_USER_PASSWORD: ${{ secrets.USER_PASSWORD }}
+      CYPRESS_HTTP_USERNAME: ${{ secrets.HTTP_USERNAME }}
+      CYPRESS_HTTP_PASSWORD: ${{ secrets.HTTP_PASSWORD }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run Cypress tests
+        run: npx cypress run --browser chrome
+
+      # Artifacts
+      - name: Upload Cypress artifacts
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: cypress-results
+          path: |
+            cypress/screenshots
+            cypress/videos
+            cypress/reports
+          retention-days: 7
