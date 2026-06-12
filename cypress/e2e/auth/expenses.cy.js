@@ -7,8 +7,8 @@ describe("Fuel Expenses Tests", () => {
   beforeEach(() => {
     LoginPage.open();
 
-    cy.env().then((env) => {
-      LoginPage.login(env.username, env.password);
+    cy.env(['username', 'password']).then(([username, password]) => {
+      LoginPage.login(username, password);
     });
     
     cy.url().should('include', '/garage');
